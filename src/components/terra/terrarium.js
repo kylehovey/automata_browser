@@ -1,53 +1,90 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
+window.terra.registerCA({
+  type: 'life-like',
+  colorFn() {
+    return this.alive ? this.color + ',1' : '0,0,0,0';
+  },
+  process(neighbors, x, y) {
+    const neighborCount = neighbors
+      .filter(({ creature }) => creature.alive)
+      .length;
+
+    this.alive = neighborCount === 3 || neighborCount === 2 && this.alive;
+
+    return true;
+  },
+}, function() {
+  this.alive = Math.random() < 0.5;
+});
 
 // TODO: Allow for more than one (id)
 const Terrarium = ({
   width,
   height,
   cellSize,
-  started,
 }) => {
+  const [ board, setBoard ] = useState(null);
+  const [ started, setStarted ] = useState(false);
+  const withBoard = name => fn => ({
+    [name](...args) {
+      if (board === null) return;
+      fn(...args);
+    },
+  });
+
+  const methods = {
+    ...withBoard`randomize`(() => {
+      board.grid = board.makeGrid('life-like');
+      board.animate(1);
+      setBoard(board);
+    }),
+    ...withBoard`animate`(() => board.animate()),
+    ...withBoard`pause`(() => board.stop()),
+    get toggleButton() {
+      return (
+        <button onClick={() => setStarted(!started)}>
+          {started ? 'stop' : 'start'}
+        </button>
+      );
+    },
+  };
+
+  // Initialize the board on mount
   useEffect(() => {
-    window.terra.registerCreature({
-      type: 'secondCreature',
-      color: [120, 0, 240],
-      sustainability: 6,
-      reproduceLv: 1
-    });
-
-    window.terra.registerCreature({
-      type: 'simplePlant',
-      color: [166, 226, 46],
-      size: 10,
-      reproduceLv: 0.8,
-      wait: function() { this.energy += 3; },
-      move: false,
-    });
-
-    const ex1 = new window.terra.Terrarium(
+    const board = new window.terra.Terrarium(
       width,
       height,
       {
         id: 'terrarium',
-        cellSize: cellSize
-      });
-
-    ex1.grid = ex1.makeGridWithDistribution(
-      [
-        ['secondCreature', 10],
-        ['simplePlant', 90],
-      ],
+        cellSize: cellSize,
+        trails: 0,
+        background: [0, 0, 0],
+      }
     );
 
     const canvas = document.getElementById('terrarium');
     document.getElementById('terrarium-container').appendChild(canvas);
 
-    ex1.animate(300);
-  });
+    setBoard(board);
+  }, []);
+
+  // Start and stop the board on started change
+  useEffect(() => {
+    if (started) {
+      methods.animate();
+    } else {
+      methods.pause();
+    }
+  }, [started]);
 
   return (
-    <div id="terrarium-container"></div>
+    <div>
+      {methods.toggleButton}
+      <button onClick={methods.randomize}>Randomize</button>
+      <div id="terrarium-container"></div>
+    </div>
   )
 };
 
@@ -55,7 +92,6 @@ Terrarium.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   cellSize: PropTypes.number.isRequired,
-  started: PropTypes.bool.isRequired,
 };
 
 export default Terrarium;
