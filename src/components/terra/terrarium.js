@@ -49,6 +49,7 @@ const Terrarium = ({
         cellSize: cellSize,
         trails: 0,
         background: [0, 0, 0],
+        periodic: true,
       }
     );
 
