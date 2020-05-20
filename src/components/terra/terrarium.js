@@ -12,6 +12,7 @@ const Terrarium = ({
 }) => {
   const [ board, setBoard ] = useState(null);
   const [ started, setStarted ] = useState(false);
+  const [ complexity, setComplexity ] = useState(null);
   const withBoard = name => fn => ({
     [name](...args) {
       if (board === null) return;
@@ -27,9 +28,24 @@ const Terrarium = ({
       setStarted(false);
       setBoard(board);
     }),
-    ...withBoard`animate`(() => board.animate()),
+    ...withBoard`animate`(() => board.animate(methods.updateComplexity)),
     ...withBoard`pause`(() => board.stop()),
-    ...withBoard`step`(() => board.animate(1)),
+    ...withBoard`step`(() => board.animate(1, methods.updateComplexity)),
+    updateComplexity() {
+      methods
+        .canvas
+        .toBlob(({ size }) => setComplexity(size), 'image/png', 1)
+    },
+    get canvas() {
+      return document.getElementById("terrarium");
+    },
+    get complexityReadout() {
+      const complexityText = complexity === null
+        ? 'Complexity: <not calculated>'
+        : `Complexity: ${complexity} bytes`;
+
+      return <span>{complexityText}</span>;
+    },
     get toggleButton() {
       return (
         <button onClick={() => setStarted(!started)}>
@@ -75,9 +91,12 @@ const Terrarium = ({
 
   return (
     <div>
-      {methods.toggleButton}
-      <button onClick={methods.step} disabled={started}>Step</button>
-      <button onClick={methods.randomize}>Randomize</button>
+      <div>
+        {methods.toggleButton}
+        <button onClick={methods.step} disabled={started}>Step</button>
+        <button onClick={methods.randomize}>Randomize</button>
+      </div>
+      {methods.complexityReadout}
       <div id="terrarium-container"></div>
     </div>
   )
