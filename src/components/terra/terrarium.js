@@ -75,6 +75,8 @@ const Terrarium = ({
     setBoard(board);
   }, []);
 
+  useEffect(methods.randomize, [board]);
+
   // Start and stop the board on started change
   useEffect(() => {
     if (started) {
