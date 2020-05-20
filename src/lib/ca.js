@@ -1,4 +1,11 @@
 /**
+ * Cool Rules
+ * 39947 - B013/S1236 - Resolves into a maze pattern
+ */
+
+export const maxRuleNumber = 2**18 - 1;
+
+/**
  * A rule number is a bit-map of birth and survival rules
  * in a life-like CA rule definition. For instance,
  * the Game of Life (B3/S23) would be:
