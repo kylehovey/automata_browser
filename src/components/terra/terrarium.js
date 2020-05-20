@@ -22,12 +22,14 @@ const Terrarium = ({
   const methods = {
     ...withBoard`randomize`(() => {
       board.grid = board.makeGrid(nameForRuleNumber(ruleNumber));
-      board.animate(1);
+      board.draw();
+
       setStarted(false);
       setBoard(board);
     }),
     ...withBoard`animate`(() => board.animate()),
     ...withBoard`pause`(() => board.stop()),
+    ...withBoard`step`(() => board.animate(1)),
     get toggleButton() {
       return (
         <button onClick={() => setStarted(!started)}>
@@ -67,11 +69,13 @@ const Terrarium = ({
 
   useEffect(() => {
     register(ruleNumber);
+    methods.randomize();
   }, [ruleNumber]);
 
   return (
     <div>
       {methods.toggleButton}
+      <button onClick={methods.step} disabled={started}>Step</button>
       <button onClick={methods.randomize}>Randomize</button>
       <div id="terrarium-container"></div>
     </div>
