@@ -23,6 +23,7 @@ const Terrarium = ({
     ...withBoard`randomize`(() => {
       board.grid = board.makeGrid(nameForRuleNumber(ruleNumber));
       board.animate(1);
+      setStarted(false);
       setBoard(board);
     }),
     ...withBoard`animate`(() => board.animate()),
