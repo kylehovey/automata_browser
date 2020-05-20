@@ -1,29 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-window.terra.registerCA({
-  type: 'life-like',
-  colorFn() {
-    return this.alive ? this.color + ',1' : '0,0,0,0';
-  },
-  process(neighbors, x, y) {
-    const neighborCount = neighbors
-      .filter(({ creature }) => creature.alive)
-      .length;
-
-    this.alive = neighborCount === 3 || neighborCount === 2 && this.alive;
-
-    return true;
-  },
-}, function() {
-  this.alive = Math.random() < 0.5;
-});
+import { register, nameForRuleNumber } from '../../lib/ca.js';
 
 // TODO: Allow for more than one (id)
 const Terrarium = ({
   width,
   height,
   cellSize,
+  ruleNumber,
 }) => {
   const [ board, setBoard ] = useState(null);
   const [ started, setStarted ] = useState(false);
@@ -36,7 +21,7 @@ const Terrarium = ({
 
   const methods = {
     ...withBoard`randomize`(() => {
-      board.grid = board.makeGrid('life-like');
+      board.grid = board.makeGrid(nameForRuleNumber(ruleNumber));
       board.animate(1);
       setBoard(board);
     }),
@@ -79,6 +64,10 @@ const Terrarium = ({
     }
   }, [started]);
 
+  useEffect(() => {
+    register(ruleNumber);
+  }, [ruleNumber]);
+
   return (
     <div>
       {methods.toggleButton}
@@ -92,6 +81,7 @@ Terrarium.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   cellSize: PropTypes.number.isRequired,
+  ruleNumber: PropTypes.number.isRequired,
 };
 
 export default Terrarium;

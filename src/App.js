@@ -10,6 +10,7 @@ const App = () => (
       width={100}
       height={100}
       cellSize={5}
+      ruleNumber={6152}
     />
   </div>
 );
