@@ -30,7 +30,7 @@ const Terrarium = ({
   const withBoard = name => fn => ({
     [name](...args) {
       if (board === null) return;
-      fn(...args);
+      return fn(...args);
     },
   });
 
