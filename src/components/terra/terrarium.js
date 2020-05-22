@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { register, nameForRuleNumber } from '../../lib/ca.js';
 
+import ComplexityChart from '../charts/complexityChart';
+
 // TODO: Allow for more than one (id)
 const Terrarium = ({
   width,
@@ -12,7 +14,7 @@ const Terrarium = ({
 }) => {
   const [ board, setBoard ] = useState(null);
   const [ started, setStarted ] = useState(false);
-  const [ complexity, setComplexity ] = useState(null);
+  const [ complexity, setComplexity ] = useState([]);
   const withBoard = name => fn => ({
     [name](...args) {
       if (board === null) return;
@@ -27,24 +29,28 @@ const Terrarium = ({
 
       setStarted(false);
       setBoard(board);
+      setComplexity([]);
     }),
     ...withBoard`animate`(() => board.animate(methods.updateComplexity)),
     ...withBoard`pause`(() => board.stop()),
     ...withBoard`step`(() => board.animate(1, methods.updateComplexity)),
     updateComplexity() {
-      methods
-        .canvas
-        .toBlob(({ size }) => setComplexity(size), 'image/png', 1)
+      methods.canvas.toBlob(
+        ({ size }) => setComplexity([...complexity, size]),
+        'image/png',
+        1,
+      );
     },
     get canvas() {
       return document.getElementById("terrarium");
     },
     get complexityReadout() {
-      const complexityText = complexity === null
-        ? 'Complexity: <not calculated>'
-        : `Complexity: ${complexity} bytes`;
+      const report = {
+        ruleNumber,
+        data: [complexity],
+      };
 
-      return <span>{complexityText}</span>;
+      return <ComplexityChart report={report} />;
     },
     get toggleButton() {
       return (
@@ -73,6 +79,7 @@ const Terrarium = ({
     document.getElementById('terrarium-container').appendChild(canvas);
 
     setBoard(board);
+    setComplexity([]);
   }, []);
 
   useEffect(methods.randomize, [board]);
