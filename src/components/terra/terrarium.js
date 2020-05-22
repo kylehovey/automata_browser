@@ -112,7 +112,7 @@ Terrarium.propTypes = {
   height: PropTypes.number.isRequired,
   cellSize: PropTypes.number.isRequired,
   ruleNumber: PropTypes.number.isRequired,
-  onComplexityChange: PropTypes.arrayOf(PropTypes.number),
+  onComplexityChange: PropTypes.func,
 };
 
 export default Terrarium;
