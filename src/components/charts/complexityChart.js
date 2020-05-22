@@ -24,7 +24,7 @@ const ComplexityChart = ({ report, title }) => {
         .map(trial => asVis(trial))
         .map((data, trialNumber) => (
           <LineSeries
-            id={`rule-${ruleNumber}-trial-${trialNumber}`}
+            key={`rule-${ruleNumber}-trial-${trialNumber}`}
             data={data}
             curve="curveMonotoneX"
           />
