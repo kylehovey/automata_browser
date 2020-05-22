@@ -1,6 +1,7 @@
 /**
  * Cool Rules
  * 39947 - B013/S1236 - Resolves into a maze pattern
+ * 123897 - B0345678/S04567 - Creates dungeon-like structures
  */
 
 export const maxRuleNumber = 2**18 - 1;
