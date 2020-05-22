@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 import { register, nameForRuleNumber } from '../../lib/ca.js';
 
-import ComplexityChart from '../charts/complexityChart';
-
+import ComplexityChart from '../charts/complexityChart'; 
 // TODO: Allow for more than one (id)
 const Terrarium = ({
   width,
@@ -32,7 +31,7 @@ const Terrarium = ({
 
       setStarted(false);
       setBoard(board);
-      setComplexity([]);
+      methods.updateComplexity();
     }),
     ...withBoard`animate`(() => board.animate(methods.updateComplexity)),
     ...withBoard`pause`(() => board.stop()),
@@ -87,7 +86,7 @@ const Terrarium = ({
     document.getElementById('terrarium-container').appendChild(canvas);
 
     setBoard(board);
-    setComplexity([]);
+    methods.updateComplexity();
   }, []);
 
   useEffect(methods.randomize, [board]);
