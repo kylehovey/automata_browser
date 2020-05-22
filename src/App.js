@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../node_modules/react-vis/dist/style.css';
 import './App.css';
 
-import { nameForRuleNumber, maxRuleNumber } from './lib/ca.js';
+import { nameForRuleNumber, maxRuleNumber } from './lib/ca';
 
 import Terrarium from './components/terra/terrarium';
 import ComplexityChart from './components/charts/complexityChart';
