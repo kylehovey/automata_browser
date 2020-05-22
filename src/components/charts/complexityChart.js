@@ -13,7 +13,7 @@ import { RuleReport } from '../../types/data';
 const asVis = (data) => data.map((y, x) => ({ x, y }));
 const asKb = (data) => data.map(sizeInBytes => (sizeInBytes / 1000).toFixed(2));
 
-const EntropyChart = ({ report }) => {
+const ComplexityChart = ({ report }) => {
   const methods = {
     get series() {
       const { ruleNumber, data } = report;
@@ -40,8 +40,8 @@ const EntropyChart = ({ report }) => {
   );
 };
 
-EntropyChart.propTypes = {
+ComplexityChart.propTypes = {
   report: RuleReport.isRequired,
 };
 
-export default EntropyChart;
+export default ComplexityChart;

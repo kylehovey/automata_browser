@@ -5,7 +5,7 @@ import './App.css';
 import { nameForRuleNumber, maxRuleNumber } from './lib/ca.js';
 
 import Terrarium from './components/terra/terrarium';
-import EntropyChart from './components/charts/entropyChart';
+import ComplexityChart from './components/charts/complexityChart';
 
 import rule667 from './data/667.json';
 
@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Entropy Exploration</h1>
+      <h1>Complexity Exploration</h1>
       <hr />
       <button onClick={methods.randomizeRule}>
         Random Rule
@@ -40,7 +40,7 @@ const App = () => {
         cellSize={5}
         ruleNumber={ruleNumber}
       />
-      <EntropyChart report={rule667} />
+      <ComplexityChart report={rule667} />
     </div>
   );
 };
