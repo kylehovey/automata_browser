@@ -25,6 +25,7 @@ const ComplexityChart = ({ report }) => {
           <LineSeries
             id={`rule-${ruleNumber}-trial-${trialNumber}`}
             data={data}
+            curve="curveMonotoneX"
           />
         ));
     }
