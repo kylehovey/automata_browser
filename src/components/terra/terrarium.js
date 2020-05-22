@@ -31,6 +31,7 @@ const Terrarium = ({
 
       setStarted(false);
       setBoard(board);
+      methods.resetComplexity();
       methods.updateComplexity();
     }),
     ...withBoard`animate`(() => board.animate(methods.updateComplexity)),
@@ -95,7 +96,6 @@ const Terrarium = ({
 
   useEffect(() => {
     register(ruleNumber);
-    methods.resetComplexity();
     methods.randomize();
   }, [ruleNumber]);
 
