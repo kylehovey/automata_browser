@@ -11,6 +11,7 @@ import rule667 from './data/667.json';
 
 const App = () => {
   const [ ruleNumber, setRuleNumber ] = useState(6152);
+  const [ complexityHistory, setComplexityHistory ] = useState([]);
 
   const methods = {
     onRuleNumberChange({ target }) {
@@ -19,6 +20,14 @@ const App = () => {
     randomizeRule() {
       setRuleNumber(parseInt(Math.random() * maxRuleNumber, 10));
     },
+    onComplexityChange(complexity) {
+      setComplexityHistory(complexity);
+    },
+  };
+
+  const report = {
+    ruleNumber,
+    data: [complexityHistory],
   };
 
   return (
@@ -39,7 +48,9 @@ const App = () => {
         height={100}
         cellSize={5}
         ruleNumber={ruleNumber}
+        onComplexityChange={methods.onComplexityChange}
       />
+      <ComplexityChart title="Simulation Complexity:" report={report} />
       <ComplexityChart title="Data Readout:" report={rule667} />
     </div>
   );

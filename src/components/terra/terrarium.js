@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 
 import { register, nameForRuleNumber } from '../../lib/ca.js';
 
-import ComplexityChart from '../charts/complexityChart'; 
 // TODO: Allow for more than one (id)
 const Terrarium = ({
   width,
   height,
   cellSize,
   ruleNumber,
-}) => {
+  onComplexityChange = () => {},
+} = {}) => {
   const [ board, setBoard ] = useState(null);
   const [ started, setStarted ] = useState(false);
-  const [ complexity, setComplexity ] = useState([]);
 
-  const complexityRef = useRef(complexity);
+  // Needs to be a ref for Terra animation callback side-effect
+  const complexity = useRef([]);
 
   const withBoard = name => fn => ({
     [name](...args) {
@@ -38,22 +38,16 @@ const Terrarium = ({
     ...withBoard`step`(() => board.animate(1, methods.updateComplexity)),
     updateComplexity() {
       methods.canvas.toBlob(
-        ({ size }) => setComplexity([...complexityRef.current, size]),
+        ({ size }) => {
+          complexity.current = [...complexity.current, size];
+          onComplexityChange(complexity.current);
+        },
         'image/png',
         1,
       );
     },
     get canvas() {
       return document.getElementById("terrarium");
-    },
-    get complexityReadout() {
-      // TODO: Move this out of this component
-      const report = {
-        ruleNumber,
-        data: [complexity],
-      };
-
-      return <ComplexityChart report={report} title="Simulation Complexity:" />;
     },
     get toggleButton() {
       return (
@@ -63,10 +57,6 @@ const Terrarium = ({
       );
     },
   };
-
-  useEffect(() => {
-    complexityRef.current = complexity;
-  }, [complexity]);
 
   // Initialize the board on mount
   useEffect(() => {
@@ -112,8 +102,7 @@ const Terrarium = ({
         <button onClick={methods.step} disabled={started}>Step</button>
         <button onClick={methods.randomize}>Randomize</button>
       </div>
-      {methods.complexityReadout}
-      <div id="terrarium-container"></div>
+      <div id="terrarium-container" />
     </div>
   )
 };
@@ -123,6 +112,7 @@ Terrarium.propTypes = {
   height: PropTypes.number.isRequired,
   cellSize: PropTypes.number.isRequired,
   ruleNumber: PropTypes.number.isRequired,
+  onComplexityChange: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default Terrarium;
