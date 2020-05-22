@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import '../node_modules/react-vis/dist/style.css';
 import './App.css';
 
-import Terrarium from './components/terra/terrarium';
 import { nameForRuleNumber, maxRuleNumber } from './lib/ca.js';
+
+import Terrarium from './components/terra/terrarium';
+import EntropyChart from './components/charts/entropyChart';
+
+import rule667 from './data/667.json';
 
 const App = () => {
   const [ ruleNumber, setRuleNumber ] = useState(6152);
@@ -35,6 +40,7 @@ const App = () => {
         cellSize={5}
         ruleNumber={ruleNumber}
       />
+      <EntropyChart report={rule667} />
     </div>
   );
 };
