@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { register, nameForRuleNumber } from '../../lib/ca.js';
@@ -15,6 +15,9 @@ const Terrarium = ({
   const [ board, setBoard ] = useState(null);
   const [ started, setStarted ] = useState(false);
   const [ complexity, setComplexity ] = useState([]);
+
+  const complexityRef = useRef(complexity);
+
   const withBoard = name => fn => ({
     [name](...args) {
       if (board === null) return;
@@ -36,7 +39,7 @@ const Terrarium = ({
     ...withBoard`step`(() => board.animate(1, methods.updateComplexity)),
     updateComplexity() {
       methods.canvas.toBlob(
-        ({ size }) => setComplexity([...complexity, size]),
+        ({ size }) => setComplexity([...complexityRef.current, size]),
         'image/png',
         1,
       );
@@ -60,6 +63,10 @@ const Terrarium = ({
       );
     },
   };
+
+  useEffect(() => {
+    complexityRef.current = complexity;
+  }, [complexity]);
 
   // Initialize the board on mount
   useEffect(() => {
