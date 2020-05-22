@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   XYPlot,
   XAxis,
@@ -13,7 +14,7 @@ import { RuleReport } from '../../types/data';
 const asVis = (data) => data.map((y, x) => ({ x, y }));
 const asKb = (data) => data.map(sizeInBytes => (sizeInBytes / 1000).toFixed(2));
 
-const ComplexityChart = ({ report }) => {
+const ComplexityChart = ({ report, title }) => {
   const methods = {
     get series() {
       const { ruleNumber, data } = report;
@@ -31,18 +32,22 @@ const ComplexityChart = ({ report }) => {
     }
   };
   return (
-    <XYPlot height={400} width={800}>
-      <XAxis title="Trial" />
-      <YAxis title="Filesize (bytes)" />
-      <HorizontalGridLines />
-      <VerticalGridLines />
-      {methods.series}
-    </XYPlot>
+    <div>
+      <h3>{title}</h3>
+      <XYPlot height={400} width={800}>
+        <XAxis title="Trial" />
+        <YAxis title="Filesize (bytes)" />
+        <HorizontalGridLines />
+        <VerticalGridLines />
+        {methods.series}
+      </XYPlot>
+    </div>
   );
 };
 
 ComplexityChart.propTypes = {
   report: RuleReport.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default ComplexityChart;

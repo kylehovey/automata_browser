@@ -40,7 +40,7 @@ const App = () => {
         cellSize={5}
         ruleNumber={ruleNumber}
       />
-      <ComplexityChart report={rule667} />
+      <ComplexityChart title="Data Readout:" report={rule667} />
     </div>
   );
 };

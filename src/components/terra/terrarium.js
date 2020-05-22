@@ -48,12 +48,13 @@ const Terrarium = ({
       return document.getElementById("terrarium");
     },
     get complexityReadout() {
+      // TODO: Move this out of this component
       const report = {
         ruleNumber,
         data: [complexity],
       };
 
-      return <ComplexityChart report={report} />;
+      return <ComplexityChart report={report} title="Simulation Complexity:" />;
     },
     get toggleButton() {
       return (
