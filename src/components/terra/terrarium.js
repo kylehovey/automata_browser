@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { register, nameForRuleNumber } from '../../lib/ca.js';
+import { register, nameForRuleNumber } from '../../lib/ca';
 
 // TODO: Allow for more than one (id)
 const Terrarium = ({
