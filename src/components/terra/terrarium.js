@@ -36,6 +36,9 @@ const Terrarium = ({
     ...withBoard`animate`(() => board.animate(methods.updateComplexity)),
     ...withBoard`pause`(() => board.stop()),
     ...withBoard`step`(() => board.animate(1, methods.updateComplexity)),
+    resetComplexity() {
+      complexity.current = [];
+    },
     updateComplexity() {
       methods.canvas.toBlob(
         ({ size }) => {
@@ -92,6 +95,7 @@ const Terrarium = ({
 
   useEffect(() => {
     register(ruleNumber);
+    methods.resetComplexity();
     methods.randomize();
   }, [ruleNumber]);
 
