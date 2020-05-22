@@ -2,6 +2,10 @@
  * Cool Rules
  * 39947 - B013/S1236 - Resolves into a maze pattern
  * 123897 - B0345678/S04567 - Creates dungeon-like structures
+ * 28062 - B123478/S1245 - Patterns of static like prison linking books
+ * 48269 - B0237/S12346 - Makes mazes like the Inception logo
+ * 117046 - B12458/S2567 - Kind of looks like water ripples
+ * 237033 - B035678/S123678 - Promising complexity curve, fills the board with live cells
  */
 
 export const maxRuleNumber = 2**18 - 1;
