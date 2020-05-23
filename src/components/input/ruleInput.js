@@ -37,11 +37,11 @@ const RuleInput = ({
     <div className="rule-input">
       <table>
         <tr>
-          <td>B</td>
+          <td>B:</td>
           {methods.countButtons(true)}
         </tr>
         <tr>
-          <td>S</td>
+          <td>S:</td>
           {methods.countButtons(false)}
         </tr>
       </table>

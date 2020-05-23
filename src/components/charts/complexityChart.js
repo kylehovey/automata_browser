@@ -34,7 +34,7 @@ const ComplexityChart = ({ report, title }) => {
   return (
     <div>
       <h3>{title}</h3>
-      <XYPlot height={400} width={800}>
+      <XYPlot height={300} width={800}>
         <XAxis title="Trial" />
         <YAxis title="Filesize (bytes)" />
         <HorizontalGridLines />

@@ -26,22 +26,30 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1>Complexity Exploration</h1>
-      <hr />
-      <button onClick={methods.randomizeRule}>
-        Random Rule
-      </button>
-      <RuleInput ruleNumber={ruleNumber} onChange={setRuleNumber} />
-      <Terrarium
-        width={100}
-        height={100}
-        cellSize={5}
-        ruleNumber={ruleNumber}
-        onComplexityChange={setComplexityHistory}
-      />
-      <ComplexityChart title="Simulation Complexity:" report={report} />
-      <ComplexityChart title="Data Readout:" report={rule667} />
+    <div className="container">
+      <div className="row">
+        <h1>Complexity Exploration</h1>
+        <hr />
+      </div>
+      <div className="row">
+        <div className="column third">
+          <button onClick={methods.randomizeRule}>
+            Random Rule
+          </button>
+          <RuleInput ruleNumber={ruleNumber} onChange={setRuleNumber} />
+          <Terrarium
+            width={100}
+            height={100}
+            cellSize={3}
+            ruleNumber={ruleNumber}
+            onComplexityChange={setComplexityHistory}
+          />
+        </div>
+        <div className="column two-thirds">
+          <ComplexityChart title="Simulation Complexity:" report={report} />
+          <ComplexityChart title="Data Readout:" report={rule667} />
+        </div>
+      </div>
     </div>
   );
 };

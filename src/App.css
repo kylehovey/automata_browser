@@ -1,3 +1,56 @@
+/**
+ * Global
+ */
+h1 {
+  text-align: center;
+}
+
+h3 {
+  margin: 0px;
+}
+
+/**
+ * Layout
+ */
+div.row {
+}
+
+div.container {
+  width: 100%;
+}
+
+div.column {
+  float: left;
+}
+
+div.column.half {
+  width: 50%;
+}
+
+div.column.third {
+  width: 33.33%;
+}
+
+div.column.two-thirds {
+  width: 66.66%;
+}
+
+div.column.quarter {
+  width: 25%;
+}
+
+div.column.three-fourths {
+  width: 75%;
+}
+
+/**
+ * Rule Input
+ */
+div.rule-input table {
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
 div.rule-input td.bit-button {
   border: 1px solid black;
   padding: 4px;
@@ -12,4 +65,15 @@ div.rule-input td.bit-button.selected {
 div.rule-input td.bit-button:hover {
   cursor: pointer;
   background-color: slategrey;
+}
+
+/**
+ * Terrarium
+ */
+div.terrarium canvas {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
