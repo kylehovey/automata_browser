@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import '../node_modules/react-vis/dist/style.css';
 import './App.css';
 
-import { nameForRuleNumber, maxRuleNumber } from './lib/ca';
+import { maxRuleNumber } from './lib/ca';
 
+import RuleInput from './components/input/ruleInput';
 import Terrarium from './components/terra/terrarium';
 import ComplexityChart from './components/charts/complexityChart';
 
@@ -14,14 +15,8 @@ const App = () => {
   const [ complexityHistory, setComplexityHistory ] = useState([]);
 
   const methods = {
-    onRuleNumberChange({ target }) {
-      setRuleNumber(target.value);
-    },
     randomizeRule() {
       setRuleNumber(parseInt(Math.random() * maxRuleNumber, 10));
-    },
-    onComplexityChange(complexity) {
-      setComplexityHistory(complexity);
     },
   };
 
@@ -37,18 +32,13 @@ const App = () => {
       <button onClick={methods.randomizeRule}>
         Random Rule
       </button>
-      <input
-        type="number"
-        value={ruleNumber}
-        onChange={methods.onRuleNumberChange}
-      />
-      <span>{nameForRuleNumber(ruleNumber)}</span>
+      <RuleInput ruleNumber={ruleNumber} onChange={setRuleNumber} />
       <Terrarium
         width={100}
         height={100}
         cellSize={5}
         ruleNumber={ruleNumber}
-        onComplexityChange={methods.onComplexityChange}
+        onComplexityChange={setComplexityHistory}
       />
       <ComplexityChart title="Simulation Complexity:" report={report} />
       <ComplexityChart title="Data Readout:" report={rule667} />

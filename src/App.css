@@ -1,0 +1,15 @@
+div.rule-input td.bit-button {
+  border: 1px solid black;
+  padding: 4px;
+  margin: 0px;
+  text-align: center;
+}
+
+div.rule-input td.bit-button.selected {
+  background-color: skyblue;
+}
+
+div.rule-input td.bit-button:hover {
+  cursor: pointer;
+  background-color: slategrey;
+}
