@@ -10,6 +10,8 @@ import ComplexityChart from './components/charts/complexityChart';
 
 import rule667 from './data/667.json';
 
+const unWrap = fn => ({ target }) => fn(target.value);
+
 const App = () => {
   const [ ruleNumber, setRuleNumber ] = useState(6152);
   const [ complexityHistory, setComplexityHistory ] = useState([]);
@@ -37,6 +39,13 @@ const App = () => {
             Random Rule
           </button>
           <RuleInput ruleNumber={ruleNumber} onChange={setRuleNumber} />
+          <label for="rule-number">Rule Number:</label>
+          <input
+            type="number"
+            id="rule-number"
+            value={ruleNumber}
+            onChange={unWrap(setRuleNumber)}
+          />
           <Terrarium
             width={100}
             height={100}
