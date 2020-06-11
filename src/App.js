@@ -7,8 +7,16 @@ import { maxRuleNumber } from './lib/ca';
 import RuleInput from './components/input/ruleInput';
 import Terrarium from './components/terra/terrarium';
 import ComplexityChart from './components/charts/complexityChart';
+import ScatterPlot from './components/charts/scatterPlot';
 
 import rule667 from './data/667.json';
+
+const scatterData = Array(2**8).fill().map(
+  () => [
+    Math.random(),
+    Math.random(),
+  ],
+);
 
 const unWrap = fn => ({ target }) => fn(target.value);
 
@@ -55,6 +63,7 @@ const App = () => {
           />
         </div>
         <div className="column two-thirds">
+          <ScatterPlot data={scatterData} />
           <ComplexityChart title="Simulation Complexity:" report={report} />
           <ComplexityChart title="Data Readout:" report={rule667} />
         </div>
