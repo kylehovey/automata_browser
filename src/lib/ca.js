@@ -7,6 +7,7 @@
  * 117046 - B12458/S2567 - Kind of looks like water ripples
  * 237033 - B035678/S123678 - Promising complexity curve, fills the board with live cells
  * 249166 - B12368/S125678 - Quickly fills the board with live cells, has oscillators
+ * 201624 - B3478/0378 - Proceeds almost like Game of Life
  */
 
 export const maxRuleNumber = 2**18 - 1;
