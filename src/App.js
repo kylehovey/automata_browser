@@ -8,6 +8,7 @@ import RuleInput from './components/input/ruleInput';
 import Terrarium from './components/terra/terrarium';
 import ComplexityChart from './components/charts/complexityChart';
 import ScatterPlot from './components/charts/scatterPlot';
+import UMAPSelect from './components/charts/umapSelect';
 
 import rule667 from './data/667.json';
 
@@ -34,6 +35,11 @@ const App = () => {
     ruleNumber,
     data: [complexityHistory],
   };
+
+  /**
+   * TODO: Delete this statement, it is for dev only.
+   */
+  return <UMAPSelect onChange={console.log} />;
 
   return (
     <div className="container">
