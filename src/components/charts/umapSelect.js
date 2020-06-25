@@ -66,7 +66,7 @@ const UMAPSelect = ({ onChange = () => {} } = {}) => {
       methods.drawPoint(userClicked, "white", 3);
       methods.drawPoint(userFound, "salmon", 3);
     },
-    colorFor(t) {
+    colorFor(t, alpha=1) {
       const dandelion = [ 242, 235, 65 ];
       const burgundy = [ 255, 0, 0 ];
       const s = 1 - t;
@@ -75,7 +75,13 @@ const UMAPSelect = ({ onChange = () => {} } = {}) => {
         (val, i) => t * val + s * dandelion[i]
       );
 
-      return `rgb(${R}, ${G}, ${B})`;
+      return `rgb(${R}, ${G}, ${B}, ${alpha})`;
+    },
+    clearCanvas() {
+      const context = canvas.getContext("2d");
+
+      context.fillStyle = "black";
+      context.fillRect(0, 0, canvas.width, canvas.height);
     },
     drawPoint([ x, y ], color = "#FFF", size = 1) {
       const context = canvas.getContext("2d");
@@ -85,30 +91,35 @@ const UMAPSelect = ({ onChange = () => {} } = {}) => {
       context.arc(x, y, size, 0, 2 * Math.PI);
       context.fill();
     },
+    drawNebula() {
+      if (canvas !== null) {
+        methods.clearCanvas();
+
+        const maxDiff = Math.min(...UMAPEmbedding.map(({ diff }) => diff));
+
+        UMAPEmbedding.forEach(({ loc, diff }) => {
+          methods.drawPoint(
+            methods.asUserSpace(loc),
+            methods.colorFor(Math.abs(diff) / Math.abs(maxDiff), 0.2),
+          );
+        });
+      }
+    },
   };
 
-  useEffect(() => {
-    if (canvas !== null) {
-      const maxDiff = Math.min(...UMAPEmbedding.map(({ diff }) => diff));
-
-      UMAPEmbedding.forEach(({ loc, diff }) => {
-        methods.drawPoint(
-          methods.asUserSpace(loc),
-          methods.colorFor(Math.abs(diff) / Math.abs(maxDiff))
-        );
-      });
-    }
-  }, [canvas]);
+  useEffect(methods.drawNebula, [canvas]);
 
   return (
-    <div style={{ backgroundColor: "black" }}>
-      <canvas
-        width="800px"
-        height="800px"
-        ref={setCanvas}
-        onClick={methods.onCanvasClick}
-      />
-    </div>
+    <canvas
+      style={{
+        backgroundColor: "black",
+        padding: "10px",
+      }}
+      width="750px"
+      height="750px"
+      ref={setCanvas}
+      onClick={methods.onCanvasClick}
+    />
   );
 };
 
