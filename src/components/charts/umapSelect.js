@@ -57,15 +57,14 @@ const UMAPSelect = ({ onChange = () => {} } = {}) => {
       ];
     },
     onCanvasClick({ clientX, clientY }) {
-      const { left, top } = canvas.getBoundingClientRect();
-      const userClicked = [ clientX - left, clientY - top ];
+      const userClicked = [ clientX, clientY ];
       const imageClicked = methods.asImageSpace(userClicked);
 
       const { rule, loc: imageFound } = methods.closestPointTo(imageClicked);
       const userFound = methods.asUserSpace(imageFound);
 
-      methods.drawPoint(userClicked);
-      methods.drawPoint(userFound, "salmon");
+      methods.drawPoint(userClicked, "white", 3);
+      methods.drawPoint(userFound, "salmon", 3);
     },
     colorFor(t) {
       const dandelion = [ 242, 235, 65 ];
@@ -78,13 +77,12 @@ const UMAPSelect = ({ onChange = () => {} } = {}) => {
 
       return `rgb(${R}, ${G}, ${B})`;
     },
-    drawPoint([ x, y ], color = "#FFF") {
+    drawPoint([ x, y ], color = "#FFF", size = 1) {
       const context = canvas.getContext("2d");
-      const { left, top } = canvas.getBoundingClientRect();
 
       context.fillStyle = color;
       context.beginPath();
-      context.arc(x - left, y - top, 1, 0, 2 * Math.PI);
+      context.arc(x, y, size, 0, 2 * Math.PI);
       context.fill();
     },
   };
