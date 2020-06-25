@@ -14,7 +14,11 @@ const extrema = UMAPEmbedding.reduce(
   [ 1, -1, 1, -1 ].map(sign => sign * Infinity),
 );
 
-const UMAPSelect = ({ onChange = () => {} } = {}) => {
+const UMAPSelect = ({
+  onChange = () => {},
+  width = "700px",
+  height = "700px",
+} = {}) => {
   const [ canvas, setCanvas ] = useState(null);
 
   const methods = {
@@ -62,6 +66,8 @@ const UMAPSelect = ({ onChange = () => {} } = {}) => {
 
       const { rule, loc: imageFound } = methods.closestPointTo(imageClicked);
       const userFound = methods.asUserSpace(imageFound);
+
+      onChange(rule);
 
       methods.drawPoint(userClicked, "white", 3);
       methods.drawPoint(userFound, "salmon", 3);
@@ -115,8 +121,8 @@ const UMAPSelect = ({ onChange = () => {} } = {}) => {
         backgroundColor: "black",
         padding: "10px",
       }}
-      width="750px"
-      height="750px"
+      width={width}
+      height={height}
       ref={setCanvas}
       onClick={methods.onCanvasClick}
     />
@@ -125,6 +131,8 @@ const UMAPSelect = ({ onChange = () => {} } = {}) => {
 
 UMAPSelect.propTypes = {
   onChange: PropTypes.func,
+  width: PropTypes.string,
+  height: PropTypes.string,
 };
 
 export default UMAPSelect;

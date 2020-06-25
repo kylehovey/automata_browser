@@ -39,7 +39,7 @@ const App = () => {
   /**
    * TODO: Delete this statement, it is for dev only.
    */
-  return <UMAPSelect onChange={console.log} />;
+  return <UMAPSelect width="750px" height="750px" onChange={console.log} />;
 
   return (
     <div className="container">
