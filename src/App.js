@@ -11,6 +11,7 @@ import ScatterPlot from './components/charts/scatterPlot';
 import UMAPSelect from './components/charts/umapSelect';
 
 import rule667 from './data/667.json';
+import UMAPEmbedding from './data/embedding.json';
 
 const scatterData = Array(2**8).fill().map(
   () => [
@@ -39,7 +40,14 @@ const App = () => {
   /**
    * TODO: Delete this statement, it is for dev only.
    */
-  return <UMAPSelect width="750px" height="750px" onChange={console.log} />;
+  return (
+    <UMAPSelect
+      width="750px"
+      height="750px"
+      embedding={UMAPEmbedding}
+      onChange={console.log}
+    />
+  );
 
   return (
     <div className="container">
