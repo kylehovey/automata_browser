@@ -103,6 +103,8 @@ const UMAPSelect = ({
       const neighborhood = methods.pointsWithin(radius, imageFound);
       const userFound = methods.asUserSpace(imageFound);
 
+      methods.drawSelected(loc);
+
       onChange({ rule, neighborhood });
     },
     colorFor(t, _alpha = 1) {
@@ -178,35 +180,23 @@ const UMAPSelect = ({
       methods.drawCrosshairsAt(userLoc);
       methods.drawCircleAbout(userLoc, "skyblue");
     }),
+    ...$(backboard, canvas)`onRuleSelect`((ruleNumber) => {
+      const found = methods.dataForRule(ruleNumber);
+
+      if (found) {
+        const { loc } = found;
+
+        methods.onImageClick(loc);
+      }
+    }),
   };
 
+  useEffect(() => methods.onRuleSelect(ruleNumber), [ruleNumber]);
   useEffect(() => {
     methods.clearBackboard();
     methods.drawNebula();
-
-    const found = methods.dataForRule(ruleNumber);
-
-    if (!found) {
-      return;
-    }
-
-    const { loc } = found;
-
-    methods.onImageClick(loc);
-    methods.drawSelected(loc);
+    methods.onRuleSelect(ruleNumber);
   }, [backboard, embedding]);
-
-  useEffect(() => {
-    const found = methods.dataForRule(ruleNumber);
-
-    if (!found) {
-      return;
-    }
-
-    const { loc } = found;
-
-    methods.drawSelected(loc);
-  }, [ruleNumber, backboard, canvas]);
 
   return (
     <div style={{ padding: "10px", position: "relative" }}>
