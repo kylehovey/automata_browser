@@ -101,12 +101,12 @@ const Terrarium = ({
 
   return (
     <div className="terrarium">
-      <div id="terrarium-container" />
       <div>
         {methods.toggleButton}
         <button onClick={methods.step} disabled={started}>Step</button>
         <button onClick={methods.randomize}>Randomize</button>
       </div>
+      <div id="terrarium-container" />
     </div>
   )
 };

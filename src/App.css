@@ -23,6 +23,10 @@ div.column {
   float: left;
 }
 
+div.column.full {
+  width: 100%;
+}
+
 div.column.half {
   width: 50%;
 }
