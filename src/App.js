@@ -12,13 +12,6 @@ import UMAPSelect from './components/charts/umapSelect';
 import rule667 from './data/667.json';
 import UMAPEmbedding from './data/embedding.json';
 
-const scatterData = Array(2**8).fill().map(
-  () => [
-    Math.random(),
-    Math.random(),
-  ],
-);
-
 const unWrap = fn => ({ target }) => fn(target.value);
 
 const App = () => {
