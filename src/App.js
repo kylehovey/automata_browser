@@ -41,12 +41,15 @@ const App = () => {
    * TODO: Delete this statement, it is for dev only.
    */
   return (
-    <UMAPSelect
-      width="750px"
-      height="750px"
-      embedding={UMAPEmbedding}
-      onChange={console.log}
-    />
+    <div style={{ margin: "50px" }}>
+      <UMAPSelect
+        width="750px"
+        height="750px"
+        embedding={UMAPEmbedding}
+        ruleNumber={ruleNumber}
+        onChange={setRuleNumber}
+      />
+    </div>
   );
 
   return (

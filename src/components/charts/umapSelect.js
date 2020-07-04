@@ -3,12 +3,17 @@ import PropTypes from 'prop-types';
 
 const UMAPSelect = ({
   embedding,
+  ruleNumber,
   onChange = () => {},
   width = "700px",
   height = "700px",
 } = {}) => {
   const [ canvas, setCanvas ] = useState(null);
   const [ backboard, setBackboard ] = useState(null);
+
+  const $ = (...truths) => method => fn => ({
+    [method]: (...args) => truths.every(t => t) ? fn(...args) : undefined,
+  });
 
   const context = canvas && canvas.getContext("2d");
   const extrema = useMemo(() => embedding.reduce(
@@ -53,7 +58,7 @@ const UMAPSelect = ({
         bottom + imageHeight * (1 - y / userHeight),
       ];
     },
-    asUserSpace([ u, v ]) {
+    ...$(backboard)`asUserSpace`(([ u, v ]) => {
       const [ left, right, bottom, top ] = extrema;
       const imageWidth = right - left;
       const imageHeight = top - bottom;
@@ -64,22 +69,22 @@ const UMAPSelect = ({
         userWidth * ((u - left) / imageWidth),
         userHeight * (1 - ((v - bottom) / imageHeight)),
       ];
-    },
-    asImageDistance(pixels) {
+    }),
+    ...$(backboard)`asImageDistance`((pixels) => {
       const [ left, right ] = extrema;
       const imageWidth = right - left;
       const userWidth = backboard.width;
 
       return pixels * imageWidth / userWidth;
-    },
-    asUserDistance(units) {
+    }),
+    ...$(backboard)`asUserDistance`((units) => {
       const [ left, right ] = extrema;
       const imageWidth = right - left;
       const userWidth = backboard.width;
 
       return units * userWidth / imageWidth;
-    },
-    onCanvasClick({ clientX, clientY }) {
+    }),
+    ...$(backboard)`onCanvasClick`(({ clientX, clientY }) => {
       const { left, top } = backboard.getBoundingClientRect();
       const userClicked = [ clientX - top, clientY - left ];
       const imageClicked = methods.asImageSpace(userClicked);
@@ -91,11 +96,7 @@ const UMAPSelect = ({
       const userFound = methods.asUserSpace(imageFound);
 
       onChange(rule);
-
-      methods.clearCanvas();
-      methods.drawCrosshairsAt(userFound);
-      methods.drawCircleAbout(userFound, "skyblue");
-    },
+    }),
     colorFor(t, alpha=1) {
       const dandelion = [ 242, 235, 65 ];
       const burgundy = [ 255, 0, 0 ];
@@ -107,19 +108,21 @@ const UMAPSelect = ({
 
       return `rgb(${R}, ${G}, ${B}, ${alpha})`;
     },
-    clearCanvas() {
+    ...$(canvas)`clearCanvas`(() => {
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-    },
+    }),
     drawPoint([ x, y ], color = "#FFF", size = 1, target = canvas) {
-      const targetContext = target.getContext("2d");
+      if (target !== null) {
+        const targetContext = target.getContext("2d");
 
-      targetContext.fillStyle = color;
-      targetContext.lineWidth = 2;
-      targetContext.beginPath();
-      targetContext.arc(x, y, size, 0, 2 * Math.PI);
-      targetContext.fill();
+        targetContext.fillStyle = color;
+        targetContext.lineWidth = 2;
+        targetContext.beginPath();
+        targetContext.arc(x, y, size, 0, 2 * Math.PI);
+        targetContext.fill();
+      }
     },
-    drawCrosshairsAt([ x, y ], color = "#FFF", width = 3) {
+    ...$(context)`drawCrosshairsAt`(([ x, y ], color = "#FFF", width = 3) => {
       context.strokeStyle = color;
       context.beginPath();
       context.moveTo(x, 0);
@@ -128,30 +131,37 @@ const UMAPSelect = ({
       context.moveTo(0, y);
       context.lineTo(canvas.width, y);
       context.stroke();
-    },
-    drawCircleAbout([ x, y ], color = "#FFF", size = 5) {
+    }),
+    ...$(context)`drawCircleAbout`(([ x, y ], color = "#FFF", size = 5) => {
       context.strokeStyle = color;
       context.beginPath();
       context.arc(x, y, size, 0, 2 * Math.PI);
       context.stroke();
-    },
-    drawNebula() {
-      if (backboard !== null) {
-        const maxDiff = Math.min(...embedding.map(({ diff }) => diff));
+    }),
+    ...$(backboard)`drawNebula`(() => {
+      const maxDiff = Math.min(...embedding.map(({ diff }) => diff));
 
-        embedding.forEach(({ loc, diff }) => {
-          methods.drawPoint(
-            methods.asUserSpace(loc),
-            methods.colorFor(Math.abs(diff) / Math.abs(maxDiff), 0.2),
-            1,
-            backboard,
-          );
-        });
-      }
-    },
+      embedding.forEach(({ loc, diff }) => {
+        methods.drawPoint(
+          methods.asUserSpace(loc),
+          methods.colorFor(Math.abs(diff) / Math.abs(maxDiff), 0.2),
+          1,
+          backboard,
+        );
+      });
+    }),
+    ...$(backboard, canvas)`drawSelected`(() => {
+      const { loc } = embedding.find(({ rule }) => rule === ruleNumber);
+      const userLoc = methods.asUserSpace(loc);
+
+      methods.clearCanvas();
+      methods.drawCrosshairsAt(userLoc);
+      methods.drawCircleAbout(userLoc, "skyblue");
+    }),
   };
 
   useEffect(methods.drawNebula, [backboard]);
+  useEffect(methods.drawSelected, [ruleNumber, backboard, canvas]);
 
   return (
     <div style={{ padding: "10px", position: "relative" }}>
@@ -174,6 +184,7 @@ const UMAPSelect = ({
 
 UMAPSelect.propTypes = {
   embedding: PropTypes.arrayOf(PropTypes.object),
+  ruleNumber: PropTypes.number.isRequired,
   onChange: PropTypes.func,
   width: PropTypes.string,
   height: PropTypes.string,
