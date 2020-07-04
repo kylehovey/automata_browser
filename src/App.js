@@ -59,7 +59,7 @@ const App = () => {
           <UMAPSelect
             width="300px"
             height="300px"
-            embedding={(console.log(neighborhood), neighborhood)}
+            embedding={neighborhood}
             ruleNumber={ruleNumber}
             onChange={({ rule }) => setRuleNumber(rule)}
             pointSize={3}
