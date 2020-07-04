@@ -24,11 +24,16 @@ const unWrap = fn => ({ target }) => fn(target.value);
 
 const App = () => {
   const [ ruleNumber, setRuleNumber ] = useState(6152);
+  const [ neighborhood, setNeighborhood ] = useState([]);
   const [ complexityHistory, setComplexityHistory ] = useState([]);
 
   const methods = {
     randomizeRule() {
       setRuleNumber(parseInt(Math.random() * maxRuleNumber, 10));
+    },
+    setRuleState({ rule, neighborhood }) {
+      setRuleNumber(rule);
+      setNeighborhood(neighborhood);
     },
   };
 
@@ -43,12 +48,22 @@ const App = () => {
   return (
     <div style={{ margin: "50px" }}>
       <UMAPSelect
-        width="750px"
-        height="750px"
+        width="400px"
+        height="400px"
         embedding={UMAPEmbedding}
         ruleNumber={ruleNumber}
-        onChange={setRuleNumber}
+        onChange={methods.setRuleState}
       />
+      <UMAPSelect
+        width="400px"
+        height="400px"
+        embedding={(console.log(neighborhood), neighborhood)}
+        ruleNumber={ruleNumber}
+        onChange={({ rule }) => setRuleNumber(rule)}
+        pointSize={3}
+        alpha={1}
+      />
+      <RuleInput ruleNumber={ruleNumber} onChange={setRuleNumber} />
     </div>
   );
 

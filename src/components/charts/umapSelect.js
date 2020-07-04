@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 const UMAPSelect = ({
   embedding,
   ruleNumber,
+  neighborDist = 5,
   onChange = () => {},
   width = "700px",
   height = "700px",
+  pointSize = 1,
+  alpha = 0.2,
 } = {}) => {
   const [ canvas, setCanvas ] = useState(null);
   const [ backboard, setBackboard ] = useState(null);
@@ -45,6 +48,9 @@ const UMAPSelect = ({
           : { loc: bestLoc, ...bestRest },
         { loc: [ Infinity, Infinity ] },
       );
+    },
+    dataForRule(ruleNumber) {
+      return embedding.find(({ rule }) => rule === ruleNumber);
     },
     asImageSpace([ x, y ]) {
       const [ left, right, bottom, top ] = extrema;
@@ -89,15 +95,17 @@ const UMAPSelect = ({
       const userClicked = [ clientX - top, clientY - left ];
       const imageClicked = methods.asImageSpace(userClicked);
 
-      const { rule, loc: imageFound } = methods.closestPointTo(imageClicked);
-      const radius = methods.asImageDistance(5);
-      console.log({ radius });
-      console.log(methods.pointsWithin(radius, imageFound));
+      methods.onImageClick(imageClicked);
+    }),
+    onImageClick(loc) {
+      const { rule, loc: imageFound } = methods.closestPointTo(loc);
+      const radius = methods.asImageDistance(neighborDist);
+      const neighborhood = methods.pointsWithin(radius, imageFound);
       const userFound = methods.asUserSpace(imageFound);
 
-      onChange(rule);
-    }),
-    colorFor(t, alpha=1) {
+      onChange({ rule, neighborhood });
+    },
+    colorFor(t, _alpha = 1) {
       const dandelion = [ 242, 235, 65 ];
       const burgundy = [ 255, 0, 0 ];
       const s = 1 - t;
@@ -106,10 +114,23 @@ const UMAPSelect = ({
         (val, i) => t * val + s * dandelion[i]
       );
 
-      return `rgb(${R}, ${G}, ${B}, ${alpha})`;
+      return `rgb(${R}, ${G}, ${B}, ${_alpha})`;
     },
+    ...$(backboard)`clearBackboard`(() => {
+      backboard.getContext("2d").clearRect(
+        0,
+        0,
+        backboard.width,
+        backboard.height
+      );
+    }),
     ...$(canvas)`clearCanvas`(() => {
-      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+      canvas.getContext("2d").clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
     }),
     drawPoint([ x, y ], color = "#FFF", size = 1, target = canvas) {
       if (target !== null) {
@@ -144,14 +165,13 @@ const UMAPSelect = ({
       embedding.forEach(({ loc, diff }) => {
         methods.drawPoint(
           methods.asUserSpace(loc),
-          methods.colorFor(Math.abs(diff) / Math.abs(maxDiff), 0.2),
-          1,
+          methods.colorFor(Math.abs(diff) / Math.abs(maxDiff), alpha),
+          pointSize,
           backboard,
         );
       });
     }),
-    ...$(backboard, canvas)`drawSelected`(() => {
-      const { loc } = embedding.find(({ rule }) => rule === ruleNumber);
+    ...$(backboard, canvas)`drawSelected`((loc) => {
       const userLoc = methods.asUserSpace(loc);
 
       methods.clearCanvas();
@@ -160,8 +180,33 @@ const UMAPSelect = ({
     }),
   };
 
-  useEffect(methods.drawNebula, [backboard]);
-  useEffect(methods.drawSelected, [ruleNumber, backboard, canvas]);
+  useEffect(() => {
+    methods.clearBackboard();
+    methods.drawNebula();
+
+    const found = methods.dataForRule(ruleNumber);
+
+    if (!found) {
+      return;
+    }
+
+    const { loc } = found;
+
+    methods.onImageClick(loc);
+    methods.drawSelected(loc);
+  }, [backboard, embedding]);
+
+  useEffect(() => {
+    const found = methods.dataForRule(ruleNumber);
+
+    if (!found) {
+      return;
+    }
+
+    const { loc } = found;
+
+    methods.drawSelected(loc);
+  }, [ruleNumber, backboard, canvas]);
 
   return (
     <div style={{ padding: "10px", position: "relative" }}>
@@ -185,6 +230,7 @@ const UMAPSelect = ({
 UMAPSelect.propTypes = {
   embedding: PropTypes.arrayOf(PropTypes.object),
   ruleNumber: PropTypes.number.isRequired,
+  neighborDist: PropTypes.number,
   onChange: PropTypes.func,
   width: PropTypes.string,
   height: PropTypes.string,
