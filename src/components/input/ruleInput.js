@@ -36,14 +36,16 @@ const RuleInput = ({
   return (
     <div className="rule-input">
       <table>
-        <tr>
-          <td>B:</td>
-          {methods.countButtons(true)}
-        </tr>
-        <tr>
-          <td>S:</td>
-          {methods.countButtons(false)}
-        </tr>
+        <tbody>
+          <tr>
+            <td className="label">B:</td>
+            {methods.countButtons(true)}
+          </tr>
+          <tr>
+            <td className="label">S:</td>
+            {methods.countButtons(false)}
+          </tr>
+        </tbody>
       </table>
     </div>
   )
