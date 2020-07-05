@@ -101,3 +101,11 @@ div.terrarium canvas {
   margin-right: auto;
   display: block;
 }
+
+/**
+ * UMAP Selection
+ */
+div.umap-select {
+  position: relative;
+  padding: 1px;
+}

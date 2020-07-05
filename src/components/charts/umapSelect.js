@@ -201,7 +201,7 @@ const UMAPSelect = ({
   }, [backboard, embedding]);
 
   return (
-    <div style={{ padding: "10px", position: "relative" }}>
+    <div className="umap-select">
       <canvas
         style={{ position: "absolute", top: 0, left: 0, zIndex: 1 }}
         width={width}
