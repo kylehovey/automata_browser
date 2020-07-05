@@ -1,6 +1,10 @@
 /**
  * Global
  */
+body {
+  background-color: #0f283e;
+}
+
 h1 {
   text-align: center;
 }
@@ -50,9 +54,21 @@ div.column.three-fourths {
 /**
  * Rule Input
  */
+div.rule-input {
+  margin: 20px
+}
+
 div.rule-input table {
   margin-left: auto; 
   margin-right: auto; 
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: bold;
+}
+
+div.rule-input td {
+  font-weight: initial;
 }
 
 div.rule-input td.bit-button {
@@ -60,10 +76,14 @@ div.rule-input td.bit-button {
   padding: 4px;
   margin: 0px;
   text-align: center;
+  color: black;
+  background-color: #dbf9f6;
 }
 
 div.rule-input td.bit-button.selected {
-  background-color: skyblue;
+  border: 1px solid #029aaa;
+  background-color: #0d6386;
+  color: white;
 }
 
 div.rule-input td.bit-button:hover {
