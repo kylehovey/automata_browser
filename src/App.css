@@ -94,12 +94,32 @@ div.rule-input td.bit-button:hover {
 /**
  * Terrarium
  */
+div.terrarium {
+  text-align: center;
+}
+
 div.terrarium canvas {
   padding-left: 0;
   padding-right: 0;
   margin-left: auto;
   margin-right: auto;
   display: block;
+}
+
+div.terrarium button {
+  border: 1px solid black;
+  margin-top: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 43.5px;
+  padding-right: 43.5px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+div.terrarium button:hover {
+  cursor: pointer;
+  background-color: salmon;
 }
 
 /**

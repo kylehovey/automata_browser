@@ -56,7 +56,7 @@ const Terrarium = ({
     get toggleButton() {
       return (
         <button onClick={() => setStarted(!started)}>
-          {started ? 'stop' : 'start'}
+          {started ? 'Stop' : 'Start'}
         </button>
       );
     },
@@ -101,11 +101,9 @@ const Terrarium = ({
 
   return (
     <div className="terrarium">
-      <div>
-        {methods.toggleButton}
-        <button onClick={methods.step} disabled={started}>Step</button>
-        <button onClick={methods.randomize}>Randomize</button>
-      </div>
+      {methods.toggleButton}
+      <button onClick={methods.step} disabled={started}>Step</button>
+      <button onClick={methods.randomize}>Randomize</button>
       <div id="terrarium-container" />
     </div>
   )
