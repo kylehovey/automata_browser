@@ -33,9 +33,11 @@ const UMAPSelect = ({
     metric([ x, y ], [ u, v ]) {
       return Math.sqrt((x - u)**2 + (y - v)**2);
     },
-    pointsWithin(range, loc) {
+    pointsWithin(range, [ x, y ]) {
       return embedding.filter(
-        ({ loc: hereLoc, ...rest }) => methods.metric(hereLoc, loc) < range,
+        ({ loc: [ u, v ] }) => (
+          Math.abs(x - u) < range && Math.abs(y - v) < range
+        ),
       );
     },
     closestPointTo(loc) {
