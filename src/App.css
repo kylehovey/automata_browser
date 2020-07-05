@@ -14,9 +14,27 @@ h3 {
 }
 
 /**
+ * Controls
+ */
+button.chungus {
+  border: 1px solid black;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+
+button.chungus:hover {
+  cursor: pointer;
+  background-color: salmon;
+}
+
+/**
  * Layout
  */
 div.row {
+  text-align: center;
 }
 
 div.container {
@@ -55,15 +73,13 @@ div.column.three-fourths {
  * Rule Input
  */
 div.rule-input {
-  margin: 20px
+  margin: 0 20px 0 20px;
 }
 
 div.rule-input table {
   margin-left: auto; 
   margin-right: auto; 
   color: white;
-  margin-left: auto;
-  margin-right: auto;
   font-weight: bold;
 }
 
@@ -93,6 +109,19 @@ div.rule-input td.bit-button.selected {
 div.rule-input td.bit-button:hover {
   cursor: pointer;
   background-color: slategrey;
+}
+
+/**
+ * Rule Label
+ */
+div.label-container {
+  text-align: center;
+  color: white;
+}
+
+div.label-container span.thicc {
+  font-weight: bold;
+  font-size: 1.1em;
 }
 
 /**

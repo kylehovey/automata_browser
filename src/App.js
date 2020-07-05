@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../node_modules/react-vis/dist/style.css';
 import './App.css';
 
-import { maxRuleNumber } from './lib/ca';
+import { maxRuleNumber, nameForRuleNumber } from './lib/ca';
 
 import RuleInput from './components/input/ruleInput';
 import Terrarium from './components/terra/terrarium';
@@ -47,15 +47,20 @@ const App = () => {
           />
         </div>
         <div className="column third">
-          <button onClick={methods.randomizeRule}>Random Rule</button>
-          <label for="rule-number">Rule Number:</label>
-          <input
-            type="number"
-            id="rule-number"
-            value={ruleNumber}
-            onChange={unWrap(setRuleNumber)}
-          />
+          <div className="label-container">
+            <div className="row">
+              Rule Number: <span className="thicc">{ruleNumber}</span>
+            </div>
+            <div className="row">
+              Canonical Name: <span className="thicc">
+                {nameForRuleNumber(ruleNumber)}
+              </span>
+            </div>
+          </div>
           <RuleInput ruleNumber={ruleNumber} onChange={setRuleNumber} />
+          <button className="chungus" onClick={methods.randomizeRule}>
+            Random Rule
+          </button>
           <UMAPSelect
             width="300px"
             height="300px"
