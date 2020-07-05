@@ -94,7 +94,7 @@ const UMAPSelect = ({
     }),
     ...$(backboard)`onCanvasClick`(({ clientX, clientY }) => {
       const { left, top } = backboard.getBoundingClientRect();
-      const userClicked = [ clientX - top, clientY - left ];
+      const userClicked = [ clientX - left, clientY - top ];
       const imageClicked = methods.asImageSpace(userClicked);
 
       methods.onImageClick(imageClicked);
