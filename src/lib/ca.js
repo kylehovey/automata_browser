@@ -8,6 +8,9 @@
  * 237033 - B035678/S123678 - Promising complexity curve, fills the board with live cells
  * 249166 - B12368/S125678 - Quickly fills the board with live cells, has oscillators
  * 201624 - B3478/0378 - Proceeds almost like Game of Life
+ * 108584 - B35/S2467 - Looks like Day and Night
+ * 233916 - B234578/S3678 - Looks like Day and Night, but inverted (closest to 108584)
+ * 107112 - B356/S0467 - Vanishing rule that looks like Day and Night or Game of Life
  */
 
 export const maxRuleNumber = 2**18 - 1;
