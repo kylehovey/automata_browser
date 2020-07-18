@@ -6,7 +6,6 @@ import { maxRuleNumber, nameForRuleNumber } from './lib/ca';
 
 import RuleInput from './components/input/ruleInput';
 import Terrarium from './components/terra/terrarium';
-import ComplexityChart from './components/charts/complexityChart';
 import UMAPSelect from './components/charts/umapSelect';
 
 import rule667 from './data/667.json';
@@ -17,7 +16,6 @@ const unWrap = fn => ({ target }) => fn(target.value);
 const App = () => {
   const [ ruleNumber, setRuleNumber ] = useState(6152);
   const [ neighborhood, setNeighborhood ] = useState([]);
-  const [ complexityHistory, setComplexityHistory ] = useState([]);
 
   const methods = {
     randomizeRule() {
@@ -27,11 +25,6 @@ const App = () => {
       setRuleNumber(rule);
       setNeighborhood(neighborhood);
     },
-  };
-
-  const report = {
-    ruleNumber,
-    data: [complexityHistory],
   };
 
   return (
@@ -77,13 +70,7 @@ const App = () => {
             height={100}
             cellSize={4}
             ruleNumber={ruleNumber}
-            onComplexityChange={setComplexityHistory}
           />
-        </div>
-      </div>
-      <div className="row">
-        <div className="column full">
-          <ComplexityChart title="Simulation Complexity:" report={report} />
         </div>
       </div>
     </div>

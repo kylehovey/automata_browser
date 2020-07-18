@@ -228,4 +228,4 @@ UMAPSelect.propTypes = {
   height: PropTypes.string,
 };
 
-export default UMAPSelect;
+export default React.memo(UMAPSelect);
