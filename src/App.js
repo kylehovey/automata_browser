@@ -19,7 +19,7 @@ const unWrapNumeric = method => fn => ({
     if (isNaN(value)) {
       fn(0);
     } else {
-      fn(target.value);
+      fn(value);
     }
   }
 });
@@ -38,7 +38,15 @@ const App = () => {
       setNeighborhood(neighborhood);
     },
     ...unWrapNumeric`onInitialProbabilityChange`(setInitialProbability),
-    ...unWrapNumeric`onRuleNumberChange`(setRuleNumber),
+    ...unWrapNumeric`onRuleNumberChange`((ruleNumber) => {
+      if (ruleNumber < 0) {
+        setRuleNumber(0);
+      } else if (ruleNumber > maxRuleNumber) {
+        setRuleNumber(maxRuleNumber);
+      } else {
+        setRuleNumber(ruleNumber);
+      }
+    }),
   };
 
   return (
@@ -55,12 +63,12 @@ const App = () => {
         </div>
         <div className="column third">
           <div className="label-container">
-            <input
-              value={ruleNumber === 0 ? '' : ruleNumber}
-              onChange={methods.onRuleNumberChange}
-            />
             <div className="row">
-              Rule Number: <span className="thicc">{ruleNumber}</span>
+              Rule Number: <input
+                value={ruleNumber === 0 ? '' : ruleNumber}
+                onChange={methods.onRuleNumberChange}
+                style={{ width: "50px" }}
+              />
             </div>
             <div className="row">
               Canonical Name: <span className="thicc">
@@ -90,10 +98,16 @@ const App = () => {
             ruleNumber={ruleNumber}
             initialProbability={initialProbability}
           />
-          <input
-            value={initialProbability === 0 ? '' : initialProbability}
-            onChange={methods.onInitialProbabilityChange}
-          />
+          <div className="label-container">
+            <div className="row">
+              Initial probability of cell life: <input
+                style={{ width: "20px" }}
+                value={initialProbability === 0 ? '' : initialProbability}
+                onChange={methods.onInitialProbabilityChange}
+              />
+              <span>%</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
