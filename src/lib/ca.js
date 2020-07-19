@@ -65,7 +65,7 @@ export const nameForRule = (rule) => {
 
 export const nameForRuleNumber = (ruleNumber) => nameForRule(ruleFor(ruleNumber));
 
-export const register = (ruleNumber) => {
+export const register = (ruleNumber, getInitialProbability = () => 0.5) => {
   const rule = ruleFor(ruleNumber);
   const type = nameForRule(rule);
 
@@ -84,7 +84,7 @@ export const register = (ruleNumber) => {
       return true;
     },
   }, function() {
-    this.alive = Math.random() < 0.5;
+    this.alive = Math.random() < getInitialProbability();
   });
 
   return type;

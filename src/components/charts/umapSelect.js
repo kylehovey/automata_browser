@@ -164,16 +164,22 @@ const UMAPSelect = ({
       context.stroke();
     }),
     ...$(backboard)`drawNebula`(() => {
-      const maxDiff = Math.min(...embedding.map(({ diff }) => diff));
+      let minDiff = Infinity;
 
-      embedding.forEach(({ loc, diff }) => {
+      for (const { diff } of embedding) {
+        if (diff < minDiff) {
+          minDiff = diff;
+        }
+      }
+
+      for (const { loc, diff } of embedding) {
         methods.drawPoint(
           methods.asUserSpace(loc),
-          methods.colorFor(Math.abs(diff) / Math.abs(maxDiff), alpha),
+          methods.colorFor(Math.abs(diff) / Math.abs(minDiff), alpha),
           pointSize,
           backboard,
         );
-      });
+      }
     }),
     ...$(backboard, canvas)`drawSelected`((loc) => {
       const userLoc = methods.asUserSpace(loc);

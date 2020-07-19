@@ -10,9 +10,11 @@ const Terrarium = ({
   cellSize,
   ruleNumber,
   onComplexityChange = () => {},
+  initialProbability = 50,
 } = {}) => {
   const [ board, setBoard ] = useState(null);
   const [ started, setStarted ] = useState(false);
+  const initialProbabilityRef = useRef(initialProbability);
 
   // Needs to be a ref for Terra animation callback side-effect
   const complexity = useRef([]);
@@ -95,9 +97,13 @@ const Terrarium = ({
   }, [started]);
 
   useEffect(() => {
-    register(ruleNumber);
+    initialProbabilityRef.current = initialProbability;
+  }, [initialProbability]);
+
+  useEffect(() => {
+    register(ruleNumber, () => initialProbabilityRef.current / 100);
     methods.randomize();
-  }, [ruleNumber]);
+  }, [ruleNumber, initialProbability]);
 
   return (
     <div className="terrarium">
@@ -115,6 +121,7 @@ Terrarium.propTypes = {
   cellSize: PropTypes.number.isRequired,
   ruleNumber: PropTypes.number.isRequired,
   onComplexityChange: PropTypes.func,
+  initialProbability: PropTypes.number,
 };
 
 export default Terrarium;

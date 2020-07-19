@@ -9,13 +9,25 @@ import Terrarium from './components/terra/terrarium';
 import UMAPSelect from './components/charts/umapSelect';
 
 import rule667 from './data/667.json';
-import UMAPEmbedding from './data/embedding.json';
+//import UMAPEmbedding from './data/embedding.json';
+import FilteredEmbedding from './data/exp_ctr_embedding.json';
 
-const unWrap = fn => ({ target }) => fn(target.value);
+const unWrapNumeric = method => fn => ({
+  [method]: ({ target }) => {
+    const value = parseInt(target.value, 10);
+
+    if (isNaN(value)) {
+      fn(0);
+    } else {
+      fn(target.value);
+    }
+  }
+});
 
 const App = () => {
   const [ ruleNumber, setRuleNumber ] = useState(6152);
   const [ neighborhood, setNeighborhood ] = useState([]);
+  const [ initialProbability, setInitialProbability ] = useState(50);
 
   const methods = {
     randomizeRule() {
@@ -25,6 +37,8 @@ const App = () => {
       setRuleNumber(rule);
       setNeighborhood(neighborhood);
     },
+    ...unWrapNumeric`onInitialProbabilityChange`(setInitialProbability),
+    ...unWrapNumeric`onRuleNumberChange`(setRuleNumber),
   };
 
   return (
@@ -34,13 +48,17 @@ const App = () => {
           <UMAPSelect
             width="400px"
             height="400px"
-            embedding={UMAPEmbedding}
+            embedding={FilteredEmbedding}
             ruleNumber={ruleNumber}
             onChange={methods.setRuleState}
           />
         </div>
         <div className="column third">
           <div className="label-container">
+            <input
+              value={ruleNumber === 0 ? '' : ruleNumber}
+              onChange={methods.onRuleNumberChange}
+            />
             <div className="row">
               Rule Number: <span className="thicc">{ruleNumber}</span>
             </div>
@@ -70,6 +88,11 @@ const App = () => {
             height={100}
             cellSize={4}
             ruleNumber={ruleNumber}
+            initialProbability={initialProbability}
+          />
+          <input
+            value={initialProbability === 0 ? '' : initialProbability}
+            onChange={methods.onInitialProbabilityChange}
           />
         </div>
       </div>
