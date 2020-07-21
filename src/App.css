@@ -7,6 +7,7 @@ body {
 
 h1 {
   text-align: center;
+  color: white;
 }
 
 h3 {
@@ -115,6 +116,7 @@ div.rule-input td.bit-button:hover {
  * Rule Label
  */
 div.label-container {
+  margin-top: 5px;
   text-align: center;
   color: white;
 }
@@ -129,6 +131,7 @@ div.label-container span.thicc {
  */
 div.terrarium {
   text-align: center;
+  margin-top: 20px;
 }
 
 div.terrarium canvas {

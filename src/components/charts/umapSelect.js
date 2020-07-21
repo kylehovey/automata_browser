@@ -10,6 +10,8 @@ const UMAPSelect = ({
   height = "700px",
   pointSize = 1,
   alpha = 0.2,
+  relativeTop = 0,
+  relativeLeft = 0,
 } = {}) => {
   const [ canvas, setCanvas ] = useState(null);
   const [ backboard, setBackboard ] = useState(null);
@@ -101,8 +103,7 @@ const UMAPSelect = ({
     }),
     onImageClick(loc) {
       const { rule, loc: imageFound } = methods.closestPointTo(loc);
-      const radius = methods.asImageDistance(neighborDist);
-      const neighborhood = methods.pointsWithin(radius, imageFound);
+      const radius = methods.asImageDistance(neighborDist); const neighborhood = methods.pointsWithin(radius, imageFound);
       const userFound = methods.asUserSpace(imageFound);
 
       methods.drawSelected(loc);
@@ -206,17 +207,23 @@ const UMAPSelect = ({
     methods.onRuleSelect(ruleNumber);
   }, [backboard, embedding]);
 
+  const baseStyle = {
+    position: "absolute",
+    top: relativeTop,
+    left: relativeLeft,
+  };
+
   return (
     <div className="umap-select">
       <canvas
-        style={{ position: "absolute", top: 0, left: 0, zIndex: 1 }}
+        style={{ ...baseStyle, zIndex: 1 }}
         width={width}
         height={height}
         ref={setCanvas}
         onClick={methods.onCanvasClick}
       />
       <canvas
-        style={{ backgroundColor: "black", position: "absolute", top: 0, left: 0, zIndex: 0 }}
+        style={{ ...baseStyle, backgroundColor: "black", zIndex: 0 }}
         width={width}
         height={height}
         ref={setBackboard}
@@ -232,6 +239,8 @@ UMAPSelect.propTypes = {
   onChange: PropTypes.func,
   width: PropTypes.string,
   height: PropTypes.string,
+  relativeTop: PropTypes.number,
+  relativeLeft: PropTypes.number,
 };
 
-export default React.memo(UMAPSelect);
+export default UMAPSelect;

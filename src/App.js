@@ -9,8 +9,7 @@ import Terrarium from './components/terra/terrarium';
 import UMAPSelect from './components/charts/umapSelect';
 
 import rule667 from './data/667.json';
-//import UMAPEmbedding from './data/embedding.json';
-import FilteredEmbedding from './data/exp_ctr_embedding.json';
+import UMAPEmbedding from './data/embedding.json';
 
 const unWrapNumeric = method => fn => ({
   [method]: ({ target }) => {
@@ -52,13 +51,20 @@ const App = () => {
   return (
     <div className="container">
       <div className="row">
+        <div className="column full">
+          <h1>UMAP Embedding of Life-Like CA - Data Explorer</h1>
+        </div>
+      </div>
+      <div className="row">
         <div className="column third">
           <UMAPSelect
             width="400px"
             height="400px"
-            embedding={FilteredEmbedding}
+            embedding={UMAPEmbedding}
             ruleNumber={ruleNumber}
             onChange={methods.setRuleState}
+            relativeLeft={30}
+            relativeTop={30}
           />
         </div>
         <div className="column third">
@@ -88,6 +94,8 @@ const App = () => {
             onChange={({ rule }) => setRuleNumber(rule)}
             pointSize={3}
             alpha={1}
+            relativeLeft={85}
+            relativeTop={20}
           />
         </div>
         <div className="column third">
