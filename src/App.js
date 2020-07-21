@@ -63,8 +63,8 @@ const App = () => {
             embedding={UMAPEmbedding}
             ruleNumber={ruleNumber}
             onChange={methods.setRuleState}
-            relativeLeft={30}
-            relativeTop={30}
+            relativeLeft="6%"
+            relativeTop="30px"
           />
         </div>
         <div className="column third">
@@ -94,8 +94,8 @@ const App = () => {
             onChange={({ rule }) => setRuleNumber(rule)}
             pointSize={3}
             alpha={1}
-            relativeLeft={85}
-            relativeTop={20}
+            relativeLeft="16%"
+            relativeTop="20px"
           />
         </div>
         <div className="column third">

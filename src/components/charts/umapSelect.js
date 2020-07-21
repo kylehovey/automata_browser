@@ -239,8 +239,8 @@ UMAPSelect.propTypes = {
   onChange: PropTypes.func,
   width: PropTypes.string,
   height: PropTypes.string,
-  relativeTop: PropTypes.number,
-  relativeLeft: PropTypes.number,
+  relativeTop: PropTypes.string,
+  relativeLeft: PropTypes.string,
 };
 
 export default UMAPSelect;
